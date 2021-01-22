@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset=utf-8 />
-	<title>Wildfires in California</title>
+	<title>Impervious Lands in Bee Foraging Areas</title>
 	<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.css" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.6.0/leaflet.css">
@@ -191,11 +191,11 @@
 		// create a Leaflet map in our division container with id of 'map'
 		var map = L.map('map', options);
 
-		var styles = {
-			weight: 1,
-			stroke: 1,
-			fillOpacity: .9
-		}
+		var tiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+			subdomains: 'abcd',
+			maxZoom: 19
+		}).addTo(map);
 
 		// add buffers data
 		var bufferLayer = L.geoJson(buffers, {
@@ -228,15 +228,34 @@
 				return {
 					// Let's experiment with these colors shortly
 					// color: '#222222', // Gray
-					color: false, // White
+					color: false,
+					fillOpacity: .7, // White
 					// Make line weight larger than the county outline
 					fillColor: '#FFFF00',
 					// This property allows us control interactivty of layer
 					interactive: true
 				};
 			},
+			onEachFeature: function (feature, layer) {
+				layer.on('mouseover', function () {
+					layer.setStyle({
+						fillColor: '#FF1E19'
+					});
+				});
+				layer.on('mouseout', function () {
+					layer.setStyle({
+						fillColor: '#FFFF00'
+					});
+				});
+
+				// create template literal for tooltip  
+				layer.bindTooltip(`Site Name: <b>${layer.feature.properties.SiteName}</b> <br> Acres Impervious: <b>${layer.feature.properties.SUM_Acres}</b> <br> Percent Impervious: <b>${layer.feature.properties.Imp}</b>`, { sticky: true });
+
+				//layer.bindTooltip(popup)
+			}
 		})
 		
+
 		impLayer.addTo(map)
 
 		// 	// add lightning cause
