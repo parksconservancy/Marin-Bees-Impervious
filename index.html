@@ -53,7 +53,22 @@
 					font-style: italic;
 					font-weight: bolder;
 					margin: 5px 0;
-				}	
+				}
+
+				@font-face {
+					font-family: 'verlag';
+					src: url(Fonts/VerlagBold.otf);
+					font-style: normal;
+					font-weight: 100
+				}
+
+				@font-face {
+					font-family: 'fairplex';
+					src: url(Fonts\FairplexWideOT.otf);
+					font-style: normal;
+					font-weight: 100;	
+
+				}
 		
 				#map {
 					position: absolute;
@@ -73,7 +88,7 @@
 					/* Add styles to match Leaflet UI elements */
 					background:  rgba(100, 100, 100, 0.9); ;
 					box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-					font-family: 'Roboto', sans-serif;
+					font-family: 'verlag';
 					border: 1px solid #66695F;
 					border-radius: 5px;
 					z-index: 800;
@@ -163,10 +178,25 @@
 <body>
 	<div id='map'></div>
 	<section id="about">
-		<h2>Percent Impervious Land within 1-Mile of Bee Study Sites</h2>
+		<h2>Impervious Lands in Bee Foraging Areas</h2>
 			<p>This map is the result of a spatial analysis performed by buffering bee study sites in Marin County, California at 1-mile and intersecting those sites with impervious land data from <a href="https://s3-us-west-2.amazonaws.com/mrlc/NLCD_2016_Impervious_L48_20190405.zip">2016 National Land Cover Dataset/ Multi-Resolution Land Characteristics Consortium. 30-m pixel raster</a>. The land area of each of the buffered study sites is <b>2010.63 Acres.
 			</b>Hover your mouse over each site to view percent and total impervious amounts at eash site.</p>
 			<p>Map authored by <a href="https://zac-stanley.github.io/">Zac Stanley</a> for the Golden Gate National Parks Conservancy</a></p>
+
+			<div id="legend">
+
+				<svg height="100" width="100%">
+					<!-- legend heading -->
+					<text x="10" y="15" style="font-family: 'verlag';font-size: 1.1em; font-weight: bold;">Legend</text>
+					<!-- impervious -->
+					<rect x="10" y="30" width="30" height="20" style="fill: #DDE419" />
+					<text x="48" y="45" style="font-size: 12px; font-family: 'fairplex';">Impervious Land</text>
+					<!-- foraging area -->
+					<rect x="10" y="60" width="30" height="20" style="fill: #354E77" />
+					<text x="48" y="75" style="font-size: 12px; font-family: 'fairplex';">Bee Foraging Area</text>
+					
+				</svg>
+			</div>
 	</section>
 </body>
 	<section>
