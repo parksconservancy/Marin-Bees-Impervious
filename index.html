@@ -63,6 +63,22 @@
 					background: rgba(63, 63, 63, 0.9);
 					/* with transparency */
 				}
+
+				#about {
+					position: absolute;
+					bottom: 20px;
+					left: 15px;
+					width: 280px;
+					padding: 0 15px;
+					/* Add styles to match Leaflet UI elements */
+					background:  rgba(100, 100, 100, 0.9); ;
+					box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+					font-family: 'Roboto', sans-serif;
+					border: 1px solid #66695F;
+					border-radius: 5px;
+					z-index: 800;
+					opacity: .95;
+				}
 		
 				a {
 					color: #004A8B;
@@ -92,27 +108,7 @@
 					/* Override the default style for Leaflet's zoom  */
 					background: rgba(100, 100, 100, 0.9);
 					color:  #222;
-				}
-
-				#info-button {
-					font-family: 'Roboto', sans-serif;
-					padding: 8px 5px;
-					font-size: 1.1em;
-					font-weight: bolder;
-					/* Style matches Leaflet controls */
-					border: 2px solid #333333;
-					background: rgba(100, 100, 100, 0.9);
-					color:  #222;
-					border-radius: 5px;
-					/* Position is fixed next to the zoom bar */
-					position: fixed;
-					top: 12px;
-					right: 150px;
-					/* Draw it on top of all elements */
-					z-index: 9999;
-					/* Cursor change on hover -- doesn't work on touch screensn */
-					cursor: pointer;
-			}
+				}		
 			
 			#footer {
 					font-family: 'Roboto', sans-serif;
@@ -166,10 +162,16 @@
 
 <body>
 	<div id='map'></div>
+	<section id="about">
+		<h2>Percent Impervious Land within 1-Mile of Bee Study Sites</h2>
+			<p>This map is the result of a spatial analysis performed by buffering bee study sites in Marin County, California at 1-mile and intersecting those sites with impervious land data from <a href="https://s3-us-west-2.amazonaws.com/mrlc/NLCD_2016_Impervious_L48_20190405.zip">2016 National Land Cover Dataset/ Multi-Resolution Land Characteristics Consortium. 30-m pixel raster</a>. The land area of each of the buffered study sites is <b>2010.63 Acres.
+			</b>Hover your mouse over each site to view percent and total impervious amounts at eash site.</p>
+			<p>Map authored by <a href="https://zac-stanley.github.io/">Zac Stanley</a> for the Golden Gate National Parks Conservancy</a></p>
+	</section>
 </body>
 	<section>
 		<div class="row">
-			<div id="map"></div>
+		<div id="map"></div>
 		</div>
 	</section>
 
@@ -181,11 +183,16 @@
 		var options = {
 			center: [37.38611, -119.44944],
 			zoomSnap: .11,
-			zoom: 6.7
+			zoom: 6.7,
+			zoomControl: false // caal this false so we can move to new location on map
 		}
 
+		
 		// create a Leaflet map in our division container with id of 'map'
 		var map = L.map('map', options);
+
+		// add zoom control to top right
+		L.control.zoom({position: 'topright'}).addTo(map);
 
 		var tiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
 			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
@@ -197,10 +204,7 @@
 		var bufferLayer = L.geoJson(buffers, {
 			style: function (feature) {
 				return {
-					// Let's experiment with these colors shortly
-					// color: '#222222', // Gray
 					color: '#ffffff', // White
-					// Make line weight larger than the county outline
 					weight: .4,
 					fillOpacity: 0.25,
 					fillColor: '#0064FF',
@@ -249,8 +253,6 @@
 				//layer.bindTooltip(popup)
 			}
 		})
-		
-
 		impLayer.addTo(map)
 
 		
